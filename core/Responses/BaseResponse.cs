@@ -1,4 +1,4 @@
-namespace ectronic_queue.Core.Responces;
+namespace ElectronicQueue.Core.Responses;
 
 public record BaseResponse(
     int Code,

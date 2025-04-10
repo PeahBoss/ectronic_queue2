@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ectronic_queue.Application.Interfaces
+﻿namespace ElectronicQueue.Application.Interfaces
 {
     public interface ICommand<TRequest, TResponse> where TRequest : class, IRequest
                                                    where TResponse : class, IResponse

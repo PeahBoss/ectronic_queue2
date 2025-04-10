@@ -1,3 +1,3 @@
-namespace ectronic_queue.Core.Interfaces;
+namespace ElectronicQueue.Core.Interfaces;
 
 public interface IRequest;

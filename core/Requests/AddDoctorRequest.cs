@@ -1,4 +1,4 @@
-namespace ectronic_queue.Core.Requests;
+namespace ElectronicQueue.Core.Requests;
 
 public record AddDoctorRequest(
     string Name,

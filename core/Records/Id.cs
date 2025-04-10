@@ -1,3 +1,3 @@
-namespace ectronic_queue.Core.Records;
+namespace ElectronicQueue.Core.Records;
 
 public record Id(Guid Value);

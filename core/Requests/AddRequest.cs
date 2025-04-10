@@ -1,8 +1,8 @@
-namespace ectronic_queue.Core.Requests;
+namespace ElectronicQueue.Core.Requests;
 
-public record AddRequest(
+public record AddPatientRequest(
     string Name,
-    DateTime DateB,
+    DateTime Birthday,
     string PhoneNumber,
    string InsuranceNumber
 ) : IRequest;

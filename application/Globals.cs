@@ -1,7 +1,9 @@
-﻿global using ectronic_queue.Core.Entities;
-global using ectronic_queue.Core.Interfaces;
-global using ectronic_queue.Core.Records;
-global using ectronic_queue.Core.Responces;
-global using ectronic_queue.Core.Requests;
+﻿global using ElectronicQueue.Core.Entities;
+global using ElectronicQueue.Core.Interfaces;
+global using ElectronicQueue.Core.Records;
+global using ElectronicQueue.Core.Responses;
+global using ElectronicQueue.Core.Requests;
 
-global using ectronic_queue.Application.Interfaces;
+
+
+global using ElectronicQueue.Application.Interfaces;
