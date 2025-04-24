@@ -1,8 +1,4 @@
-﻿using ElectronicQueue.Core.Entities;
-using ElectronicQueue.Application.Interfaces;
-using ElectronicQueue.Core.Interfaces;
-
-namespace ElectronicQueue.Application.Patients;
+﻿namespace ElectronicQueue.Application.Patients;
 
 public class AddOrUpdatePatientCommand(
     IRepository<Patient> patientsRepository

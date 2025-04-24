@@ -1,8 +1,4 @@
-﻿using ElectronicQueue.Core.Entities;
-using ElectronicQueue.Application.Interfaces;
-using ElectronicQueue.Core.Interfaces;
-
-namespace ElectronicQueue.Application.Appointments;
+﻿namespace ElectronicQueue.Application.Appointments;
 
 public class AddOrUpdateAppointmentCommand(
     IRepository<Appointment> appointmentsRepository,

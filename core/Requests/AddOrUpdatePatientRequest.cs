@@ -1,4 +1,6 @@
-﻿using ElectronicQueue.Core.Enums; // если Gender находится там
+﻿using ElectronicQueue.Core.Enums;
+
+namespace ElectronicQueue.Core.Requests;
 
 public record AddOrUpdatePatientRequest(
     Guid? Id,

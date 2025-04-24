@@ -1,4 +1,6 @@
-﻿public record AddOrUpdateAppointmentRequest(
+﻿namespace ElectronicQueue.Core.Requests;
+
+public record AddOrUpdateAppointmentRequest(
     Guid? Id,
     DateTime? AppointmentDate,
     string? ClinicalRecords,
