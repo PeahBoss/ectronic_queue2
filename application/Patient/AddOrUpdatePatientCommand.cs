@@ -8,43 +8,41 @@ public class AddOrUpdatePatientCommand(
     {
         bool isAdding = request.Id is null;
 
-        // Получаем всех пациентов и ищем нужного
+        // Получаем всех пациентов и фильтруем в памяти
         var allPatients = await patientsRepository.GetAllAsync(cancellationToken);
-        Patient? patient = null;
+        Patient patient = null!;
 
         if (isAdding)
         {
-            patient = allPatients.FirstOrDefault(p =>
-                p.PhoneNumber == request.PhoneNumber && p.Name == request.Name);
+            var potentialPatient = allPatients.FirstOrDefault(p =>
+                p.Name == request.Name && p.PhoneNumber == request.PhoneNumber);
 
-            if (patient is not null)
+            if (potentialPatient is not null)
                 return new(409, $"Patient with phone number {request.PhoneNumber} already exists.");
+
+            patient = new Patient
+            {
+                Appointments = []
+            };
         }
         else
         {
-            patient = allPatients.FirstOrDefault(p => p.Id.Value == request.Id!.Value);
-            if (patient is null)
+            var potentialPatient = allPatients.FirstOrDefault(p => p.Id.Value == request.Id!.Value);
+            if (potentialPatient is null)
                 return new(404, "Patient not found.");
-
-            patient.Name = request.Name;
-            patient.Birthday = request.Birthday;
-            patient.Gender = request.Gender;
-            patient.PhoneNumber = request.PhoneNumber;
-            patient.InsuranceNumber = request.InsuranceNumber;
+            else
+                patient = potentialPatient;
         }
+
+        // Обновляем или присваиваем поля
+        patient.Name = request.Name;
+        patient.Birthday = request.Birthday;
+        patient.Gender = request.Gender;
+        patient.PhoneNumber = request.PhoneNumber;
+        patient.InsuranceNumber = request.InsuranceNumber;
 
         if (isAdding)
         {
-            patient = new Patient
-            {
-                Name = request.Name,
-                Birthday = request.Birthday,
-                Gender = request.Gender,
-                PhoneNumber = request.PhoneNumber,
-                InsuranceNumber = request.InsuranceNumber,
-                Appointments = []
-            };
-
             await patientsRepository.AddAsync(patient, cancellationToken);
         }
 
@@ -52,3 +50,4 @@ public class AddOrUpdatePatientCommand(
         return new(200, "OK");
     }
 }
+

@@ -10,48 +10,48 @@ public class AddOrUpdateAppointmentCommand(
     {
         bool isAdding = request.Id is null;
 
+        // Получаем все приемы
         var allAppointments = await appointmentsRepository.GetAllAsync(cancellationToken);
-        Appointment? appointment = null;
+        Appointment appointment = null!;
 
-        if (!isAdding)
+        if (isAdding)
         {
-            appointment = allAppointments.FirstOrDefault(a => a.Id.Value == request.Id!.Value);
-            if (appointment is null)
+            appointment = new Appointment();
+        }
+        else
+        {
+            var potentialAppointment = allAppointments.FirstOrDefault(a => a.Id.Value == request.Id!.Value);
+            if (potentialAppointment is null)
                 return new(404, "Appointment not found.");
-
-            appointment.AppointmentDate = request.AppointmentDate;
-            appointment.ClinicalRecords = request.ClinicalRecords;
+            else
+                appointment = potentialAppointment;
         }
 
+        // Получаем врача
         var allDoctors = await doctorsRepository.GetAllAsync(cancellationToken);
         var doctor = allDoctors.FirstOrDefault(d => d.Id.Value == request.DoctorId);
         if (doctor is null)
             return new(404, "Doctor not found.");
 
+        // Получаем пациента
         var allPatients = await patientsRepository.GetAllAsync(cancellationToken);
         var patient = allPatients.FirstOrDefault(p => p.Id.Value == request.PatientId);
         if (patient is null)
             return new(404, "Patient not found.");
 
+        // Обновление данных
+        appointment.AppointmentDate = request.AppointmentDate;
+        appointment.ClinicalRecords = request.ClinicalRecords;
+        appointment.Doctor = doctor;
+        appointment.Patient = patient;
+
         if (isAdding)
         {
-            appointment = new Appointment
-            {
-                AppointmentDate = request.AppointmentDate,
-                ClinicalRecords = request.ClinicalRecords,
-                Doctor = doctor,
-                Patient = patient
-            };
-
             await appointmentsRepository.AddAsync(appointment, cancellationToken);
-        }
-        else
-        {
-            appointment.Doctor = doctor;
-            appointment.Patient = patient;
         }
 
         await appointmentsRepository.SaveChanges(cancellationToken);
         return new(200, "OK");
     }
 }
+
