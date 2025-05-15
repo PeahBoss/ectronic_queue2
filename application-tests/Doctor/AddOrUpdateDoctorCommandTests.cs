@@ -71,7 +71,7 @@ public class AddOrUpdateDoctorCommandTests
             Name = new Faker().Name.JobTitle()
         }).ToList();
 
-        FakeRepository<Specialization> specializationRepo = new(specs.ToArray()); 
+        FakeRepository<Specialization> specializationRepo = new([.. specs]); 
         var doctorFaker = new Faker<Doctor>()
             .RuleFor(d => d.Id, f => new(f.Random.Guid()))
             .RuleFor(d => d.Name, f => f.Name.FullName())
