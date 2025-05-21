@@ -26,12 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Appointment\" />
-    <Folder Include="Patient\" />
-    <Folder Include="Specialization\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\application\application.csproj" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>

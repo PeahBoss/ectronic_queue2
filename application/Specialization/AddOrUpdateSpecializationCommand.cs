@@ -1,51 +1,71 @@
-﻿using ElectronicQueue.Core.Entities;
-using ElectronicQueue.Application.Interfaces;
-using ElectronicQueue.Core.Interfaces;
+﻿using Microsoft.Extensions.Logging;
 
 namespace ElectronicQueue.Application.Specializations;
 
 public class AddOrUpdateSpecializationCommand(
-    IRepository<Specialization> specializationsRepository
+    IRepository<Specialization> specializationsRepository,
+    IValidator<Specialization>? specializationValidator = null,
+    ILogger<AddOrUpdateSpecializationCommand>? logger = null
 ) : ICommand<AddOrUpdateSpecializationRequest, BaseResponse>
 {
     public async Task<BaseResponse> ExecuteAsync(AddOrUpdateSpecializationRequest request, CancellationToken cancellationToken = default)
     {
-        bool isAdding = request.Id is null;
-
-        // Получаем все специализации и фильтруем в памяти
-        var allSpecializations = await specializationsRepository.GetAllAsync(cancellationToken);
-        Specialization? specialization = null;
-
-        if (isAdding)
+        try
         {
-            // Проверка на существование специализации с таким же названием
-            specialization = allSpecializations.FirstOrDefault(s => s.Name == request.Name);
-            if (specialization is not null)
-                return new(409, $"Specialization '{request.Name}' already exists.");
+            bool isAdding = request.Id is null;
+            logger?.LogInformation("RQST: {Operation} specialization '{SpecializationName}'",
+                                   isAdding ? "creation" : "update",
+                                   request.Name);
 
-            // Если специализация новая, создаем объект
-            specialization = new Specialization
+            var allSpecializations = await specializationsRepository.GetAllAsync(cancellationToken);
+            Specialization specialization;
+
+            if (isAdding)
             {
-                Name = request.Name,
-                Doctors = new List<Doctor>() // Пустой список врачей
-            };
+                var potentialSpecialization = allSpecializations.FirstOrDefault(s => s.Name == request.Name);
+                if (potentialSpecialization is not null)
+                {
+                    logger?.LogWarning("RQST: failed: Specialization '{Name}' already exists", request.Name);
+                    return new(409, $"Specialization '{request.Name}' already exists.");
+                }
 
-            await specializationsRepository.AddAsync(specialization, cancellationToken);
+                specialization = new Specialization
+                {
+                    Name = request.Name,
+                    Doctors = []
+                };
+            }
+            else
+            {
+                specialization = allSpecializations.FirstOrDefault(s => s.Id.Value == request.Id!.Value)!;
+
+                if (specialization is null)
+                {
+                    logger?.LogWarning("RQST: failed: Specialization ID {SpecializationId} not found", request.Id);
+                    return new(404, "Specialization not found.");
+                }
+            }
+
+            var oldName = specialization.Name;
+            specialization.Name = request.Name;
+
+            if (specializationValidator is not null && !await specializationValidator.ValidateAsync(specialization, cancellationToken))
+            {
+                logger?.LogWarning("RQST: failed: validation failed for specialization '{SpecializationName}'", request.Name);
+                specialization.Name = oldName;
+                return new(400, "Specialization validation failed");
+            }
+
+            await specializationsRepository.AddOrUpdateAsync(specialization, cancellationToken);
+            await specializationsRepository.SaveChanges(cancellationToken);
+
+            return new(200, "OK");
         }
-        else
+        catch (Exception ex)
         {
-            // Обновление существующей специализации
-            specialization = allSpecializations.FirstOrDefault(s => s.Id.Value == request.Id!.Value);
-            if (specialization is null)
-                return new(404, "Specialization not found.");
-
-            specialization.Name = request.Name; // Обновляем название
+            logger?.LogError(ex, "RQST: failed: unexpected error during {Operation} for specialization '{SpecializationName}'",
+                             request.Id is null ? "creation" : "update", request.Name);
+            return new(500, "An error occurred while processing your request");
         }
-
-        // Сохраняем изменения в базе данных
-        await specializationsRepository.SaveChanges(cancellationToken);
-        return new(200, "OK");
     }
 }
-
-
