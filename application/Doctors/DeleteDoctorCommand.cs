@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using ElectronicQueue.Core.Entities;
-using ElectronicQueue.Application;
 
 namespace ElectronicQueue.Application.Doctors;
 
