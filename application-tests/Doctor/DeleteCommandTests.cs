@@ -119,7 +119,7 @@ public class DeleteDoctorCommandTests
         public Task RemoveRangeAsync(IEnumerable<Doctor> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<Doctor>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Doctor>>(Array.Empty<Doctor>());
         public Task<IEnumerable<Doctor>> GetAllAsync(Func<Doctor, bool> predicate, CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Doctor>>(Array.Empty<Doctor>());
-        public Task SaveChanges(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task SaveChangesAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateAsync(Doctor entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateRangeAsync(IEnumerable<Doctor> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public IQueryable<Doctor> Db => throw new NotImplementedException();

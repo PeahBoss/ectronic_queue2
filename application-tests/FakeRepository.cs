@@ -38,6 +38,6 @@ public class FakeRepository<TEntity>(TEntity[]? entities = null) : IRepository<T
     public Task<TEntity?> GetOneAsync(Func<TEntity, bool> predicate, CancellationToken cancellationToken = default) =>
         Task.FromResult(Db.FirstOrDefault(predicate));
 
-    public Task SaveChanges(CancellationToken cancellationToken = default) =>
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default) =>
         Task.CompletedTask;
 }

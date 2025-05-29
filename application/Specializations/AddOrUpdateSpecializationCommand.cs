@@ -57,7 +57,7 @@ public class AddOrUpdateSpecializationCommand(
             }
 
             await specializationsRepository.AddOrUpdateAsync(specialization, cancellationToken);
-            await specializationsRepository.SaveChanges(cancellationToken);
+            await specializationsRepository.SaveChangesAsync(cancellationToken);
 
             return new(200, "OK");
         }

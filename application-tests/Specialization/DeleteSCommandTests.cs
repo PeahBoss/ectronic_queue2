@@ -106,7 +106,7 @@ public class DeleteSpecializationCommandTests
         public Task RemoveRangeAsync(IEnumerable<Specialization> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<Specialization>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Specialization>>(Array.Empty<Specialization>());
         public Task<IEnumerable<Specialization>> GetAllAsync(Func<Specialization, bool> predicate, CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Specialization>>(Array.Empty<Specialization>());
-        public Task SaveChanges(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task SaveChangesAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateAsync(Specialization entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateRangeAsync(IEnumerable<Specialization> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public IQueryable<Specialization> Db => throw new NotImplementedException();

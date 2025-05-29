@@ -72,7 +72,7 @@ public class AddOrUpdateAppointmentCommand(
             }
 
             await appointmentsRepository.AddOrUpdateAsync(appointment, cancellationToken);
-            await appointmentsRepository.SaveChanges(cancellationToken);
+            await appointmentsRepository.SaveChangesAsync(cancellationToken);
 
             return new(200, "OK");
         }

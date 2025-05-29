@@ -106,7 +106,7 @@ public class DeleteAppointmentCommandTests
         public Task RemoveRangeAsync(IEnumerable<Appointment> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task<IEnumerable<Appointment>> GetAllAsync(CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Appointment>>(Array.Empty<Appointment>());
         public Task<IEnumerable<Appointment>> GetAllAsync(Func<Appointment, bool> predicate, CancellationToken cancellationToken = default) => Task.FromResult<IEnumerable<Appointment>>(Array.Empty<Appointment>());
-        public Task SaveChanges(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task SaveChangesAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateAsync(Appointment entity, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public Task AddOrUpdateRangeAsync(IEnumerable<Appointment> entities, CancellationToken cancellationToken = default) => Task.CompletedTask;
         public IQueryable<Appointment> Db => throw new NotImplementedException();

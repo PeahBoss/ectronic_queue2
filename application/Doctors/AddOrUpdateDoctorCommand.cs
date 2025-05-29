@@ -79,7 +79,7 @@ public class AddOrUpdateDoctorCommand(
             }
 
             await doctorsRepository.AddOrUpdateAsync(doctor, cancellationToken);
-            await doctorsRepository.SaveChanges(cancellationToken);
+            await doctorsRepository.SaveChangesAsync(cancellationToken);
 
             return new(200, "OK");
         }
